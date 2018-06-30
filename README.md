@@ -1,3 +1,15 @@
+# playground fork
+
+This is a fork of the playground provided by the original authors of golang.
+
+Changes found here are about display quality of the playground,
+it should fix issues i face with firefox, provide more robust test procedure,
+and be generally more user friendly.
+
+All changes found here are not licensed (ie: do whatever you need with, or just dont use it).
+
+Good Luck With That and Godspeed.
+
 # playground
 
 This subrepository holds the source for the Go playground:
