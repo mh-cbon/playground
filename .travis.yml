@@ -1,0 +1,18 @@
+lang: go
+go:
+- "1.x"
+script:
+- make
+after_success:
+- OUT=${TRAVIS_BUILD_ID} BROWSER="firefox" .travis/push.sh
+- OUT=${TRAVIS_BUILD_ID} BROWSER="chrome" .travis/push.sh
+env:
+  global:
+    secure: jOsmXOqd5NShemeGvDVEyfE+mw5K2fNXozfnLZxYTmQElfMZG8fN5jhYQOfCyqUH3WAavT3AMhhqVX22WTj2xrx+hY1PqioAZS5/HITEHVBSG5q3MF6tBUIrcMuNVkM6ljGljCKb+fjXBsCamaNqFjIGAc4s8W43Gq21U0Des7HVr+HOUZ9p22ocUKgjn/SJ6r44YBvw/5ALrbTPjDO8sD3eONmWl+q3aJ9+k8ay9IJUX7qD2k/eMsqrbIzD/7yEVP74siW0HSGNBOpRrVAqq+VGPWSUI8yeYfbw3VqI6UCov8HMlRi6HfeyNMEYzlJGiY/2DIANGx26ySt1uabJApCZy5Gaj9Z1CwwmvIYua310vasTeKIP+nkfl1ZJFt4JeuHLMD3354HFMTnkCJ4T1embvJWvWbGEfb66mj7ojjv8YBWFKGoSyluVDHbB61/2xlOB7FBV9GSGyH4fbN+lDs4cpEp7bPbI1BIUKwzqhbwCFmMrvV1Dmd5Wk40YY05/HXMDMmeLJWKRjlAUVaTgQhdLr/tg8EMuFF0zM3X+8EATR4YLGwyZXlNpH0Up7xsAHHJUpvIGmEI3Vwm7uuCb/xcPuLbWDXt/zn38q5nTmPb7vr/sku+xJsfLpJCuet3ufoLF12fs0GA9HoxycOoiq7uXgdBDmUyfqJ1kDErQAGA=
+  - MOZ_HEADLESS=1
+addons:
+  firefox: latest
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start

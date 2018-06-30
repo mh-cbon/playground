@@ -1,0 +1,38 @@
+version: "{build}"
+
+# Source Config
+
+clone_folder: c:\gopath\src\github.com\golang\playground
+
+# Build host
+
+environment:
+  GOPATH: c:\gopath
+GOVERSION: 1.9
+
+environment:
+  access_token:
+    secure: 2KTtwObim3wPL7ZQgrWNBf21fQZqnISnWqM+MYjKKVSg1Yp8QLxx6Xdj8C7LrVLP
+
+install:
+  # Install the specific Go version.
+  - set Path=c:\go\bin;c:\gopath\bin;%Path%
+  - go version
+  - go env
+  - Get-AppXPackage -AllUsers -Name Microsoft.MicrosoftEdge | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" -Verbose}
+
+build: false
+deploy: false
+
+test_script:
+  - mkdir ${APPVEYOR_BUILD_ID}
+  - go run screenshot.go screenshot_notwindows.go -action initial -browser edge -out ${APPVEYOR_BUILD_ID}/initial.png
+  - go run screenshot.go screenshot_notwindows.go -action checkbox -browser edge -out ${APPVEYOR_BUILD_ID}/checkbox.png
+  - git config --global credential.helper store
+  - ps: Add-Content "$HOME\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+  - git config --global user.email "travis@travis-ci.org"
+  - git config --global user.name "Travis CI"
+  - git checkout gh-pages
+  - git add -A
+  - git commit ...
+  - git push ...
