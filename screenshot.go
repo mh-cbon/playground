@@ -28,7 +28,7 @@ func main() {
 		sleep      time.Duration
 	}{}
 
-	flag.StringVar(&opts.windowsize, "windowsize", "800*600", "the window size")
+	flag.StringVar(&opts.windowsize, "windowsize", "800*600", "the window size, width*height")
 	flag.StringVar(&opts.browser, "browser", "", "the browser target, one of chrome|edge (os dependant)")
 	flag.StringVar(&opts.out, "out", "-", "out destination")
 	flag.StringVar(&opts.action, "action", "initial", "action to do, one of initial|checkbox")
@@ -113,7 +113,7 @@ func screenshotInitialLoading(urlstr, windowsize string, sleep time.Duration, re
 		if len(f) != 2 {
 			log.Fatal("invalid window size, should be height*width, got", windowsize)
 		}
-		setWindowSize = fmt.Sprintf(`document.body.style.height="%vpx";document.body.style.width="%vpx";`, f[0], f[1])
+		setWindowSize = fmt.Sprintf(`document.body.style.width="%vpx";document.body.style.height="%vpx";`, f[0], f[1])
 	}
 	return chromedp.Tasks{
 		chromedp.Navigate(urlstr),
@@ -133,7 +133,7 @@ func screenshotCheckbox(urlstr, windowsize string, sleep time.Duration, res *[]b
 		if len(f) != 2 {
 			log.Fatal("invalid window size, should be height*width, got", windowsize)
 		}
-		setWindowSize = fmt.Sprintf(`document.body.style.height="%vpx";document.body.style.width="%vpx";`, f[0], f[1])
+		setWindowSize = fmt.Sprintf(`document.body.style.width="%vpx";document.body.style.height="%vpx";`, f[0], f[1])
 	}
 	return chromedp.Tasks{
 		chromedp.Navigate(urlstr),
