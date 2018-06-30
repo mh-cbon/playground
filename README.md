@@ -18,6 +18,16 @@ docker run --name=play --rm -d -p 8080:8080 playground
 cat /path/to/code.go | go run client.go | curl -s --upload-file - localhost:8080/compile
 ```
 
+## Hacking
+
+```
+docker rm -f play
+docker run --name=play --rm -d -p 8080:8080 \
+  -v `pwd`/edit.html:/app/edit.html \
+  -v `pwd`/static/:/app/static/ \
+  playground
+```
+
 # Deployment
 
 ```
