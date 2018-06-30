@@ -129,6 +129,11 @@ input[type=button],
 	left: 1px;
 	height: 10px;
 	width: 10px;
+	background: white;
+	border: none;
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
 }
 #shareURL {
 	width: 280px;
