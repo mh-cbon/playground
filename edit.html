@@ -20,7 +20,7 @@
 		<script>
 		$(document).ready(function() {
 			playground({
-				'codeEl':       '#code',
+				'codeEl':       '#hiddencode',
 				'outputEl':     '#output',
 				'runEl':        '#run, #embedRun',
 				'fmtEl':        '#fmt',
@@ -42,9 +42,9 @@
 				'embedLabelEl': '#embedLabel',
 				'embedHTMLEl':  '#shareURL'
 			});
-			$('#code').linedtextarea();
+			// $('#code').linedtextarea();
 			// Avoid line wrapping.
-			$('#code').attr('wrap', 'off');
+			// $('#code').attr('wrap', 'off');
 			var about = $('#about');
 			about.click(function(e) {
 				if ($(e.target).is('a')) {
@@ -100,37 +100,42 @@
 		</script>
 	</head>
 	<body itemscope itemtype="http://schema.org/CreativeWork">
-		<input type="button" value="Run" id="embedRun">
-		<div id="banner">
-			<div id="head" itemprop="name">The Go Playground</div>
-			<div id="controls">
-				<input type="button" value="Run" id="run">
-				<input type="button" value="Format" id="fmt">
-				<div id="importsBox">
-					<label title="Rewrite imports on Format">
-						<input type="checkbox" id="imports">
-						Imports
+		<div>
+			<input type="button" value="Run" id="embedRun">
+			<div id="banner">
+				<div id="head" itemprop="name">The Go Playground</div>
+				<div id="controls">
+					<input type="button" value="Run" id="run">
+					<input type="button" value="Format" id="fmt">
+					<div id="importsBox">
+						<label title="Rewrite imports on Format">
+							<input type="checkbox" id="imports">
+							Imports
+						</label>
+					</div>
+					{{if $.Share}}
+					<input type="button" value="Share" id="share">
+					<input type="text" id="shareURL">
+					<label id="embedLabel">
+						<input type="checkbox" id="embed">
+						embed
 					</label>
+					{{end}}
 				</div>
-				{{if $.Share}}
-				<input type="button" value="Share" id="share">
-				<input type="text" id="shareURL">
-				<label id="embedLabel">
-					<input type="checkbox" id="embed">
-					embed
-				</label>
-				{{end}}
+				<div id="aboutControls">
+					<input type="button" value="About" id="aboutButton">
+				</div>
 			</div>
-			<div id="aboutControls">
-				<input type="button" value="About" id="aboutButton">
+			<div id="wrap">
+				<div itemprop="description" id="code" name="code"
+				autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false"
+				>{{printf "%s" .Snippet.Body}}</div>
+				<textarea id="hiddencode" style="display:none">{{printf "%s" .Snippet.Body}}</textarea>
+				<!-- <textarea itemprop="description" id="code" name="code" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false">{{printf "%s" .Snippet.Body}}</textarea> -->
 			</div>
-		</div>
-		<div id="wrap">
-			<textarea itemprop="description" id="code" name="code" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false">{{printf "%s" .Snippet.Body}}</textarea>
-		</div>
-		<div id="output"></div>
-		<img itemprop="image" src="/static/gopher.png" style="display:none">
-		<div id="about">
+			<div id="output"></div>
+			<img itemprop="image" src="/static/gopher.png" style="display:none">
+			<div id="about">
 <p><b>About the Playground</b></p>
 
 <p>
@@ -198,6 +203,18 @@ Any requests for content removal should be directed to
 <a href="mailto:security@golang.org">security@golang.org</a>.
 Please include the URL and the reason for the request.
 </p>
+			</div>
 		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var editor = ace.edit("code");
+			editor.setTheme("ace/theme/iplasting");
+			editor.session.setMode("ace/mode/golang");
+
+			editor.session.on('change', function(delta) {
+				$("#hiddencode").val(editor.getValue());
+			});
+
+		</script>
 	</body>
 </html>
